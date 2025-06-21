@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Achievements</title>
+    <!-- بسم الله الرحمن الرحيم -->
+    <style>
+        :root {
+            --primary: #1b6411;
+            --accent: #10b981;
+            --bg-light: #f8fafc;
+            --dark: #1f2937;
+            --white: #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-light); color: var(--dark); }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px; background: rgba(255,255,255,0.8); position: sticky; top: 0; z-index: 100; }
+        header .home-link { text-decoration: none; color: var(--primary); font-weight: 600; }
+        .hero { position: relative; padding: 60px 20px; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; justify-content: center; align-items: center; color: var(--white); }
+        .hero h1 { font-size: 2.5rem; }
+        .shape { position: absolute; opacity: 0.15; animation: float 6s ease-in-out infinite; }
+        .shape.circle { width: 100px; height: 100px; border-radius: 50%; background: var(--accent); top: 10%; left: 10%; }
+        .shape.square { width: 80px; height: 80px; background: var(--white); bottom: 15%; right: 15%; }
+        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(20px); } }
+        .section { padding: 40px 20px; max-width: 1000px; margin: 0 auto; }
+        .year-title { font-size: 1.8rem; margin-bottom: 20px; color: var(--primary); text-align: center; }
+        .cards { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); }
+        .card { background: var(--white); padding: 20px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); text-align: center; }
+        .photo { width: 140px; height: 140px; border-radius: 50%; overflow: hidden; margin: 0 auto 15px; border: 4px solid var(--accent); }
+        .photo img { width:100%; height:100%; object-fit:cover; }
+        .name { font-weight: 600; margin-bottom: 8px; }
+        .school { font-size: 0.9rem; margin-bottom: 10px; color: var(--dark); }
+        .percent, .admission { font-size: 1rem; font-weight:500; color: var(--accent); margin-bottom: 6px; }
+        .stats-grid { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-bottom: 20px; }
+        .stat-card { background: var(--white); flex: 1 1 150px; padding: 15px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); text-align: center; }
+        .stat-value { font-size: 1.5rem; font-weight:700; margin-bottom: 5px; color: var(--primary); }
+        .stat-label { font-size: 0.9rem; color: var(--dark); }
+        /* Two-col for JEE section */
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: center; }
+        @media (max-width: 768px) { .two-col { grid-template-columns: 1fr; } }
+        /* Popup */
+        .modal { display: none; position: fixed; top:0; left:0; width:100vw; height:100vh; background: rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:200; }
+        .modal-content { background: var(--white); padding:30px; border-radius:12px; text-align:center; max-width: 90%; }
+        .modal-content button { margin-top:20px; padding:10px 20px; background: var(--primary); color: var(--white); border:none; border-radius:8px; cursor:pointer; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">Our Achievement</div>
+        <a href="https://your-main-website.com" class="home-link">Home</a>
+    </header>
+    <!-- Hero for 2025 -->
+    <section class="hero">
+        <h1>Top Performers 2025</h1>
+        <div class="shape circle"></div>
+        <div class="shape square"></div>
+    </section>
+
+    <!-- JEE Main 2024 -->
+    <section class="section" id="jee-2024">
+        <h2 class="year-title">JEE (Main) Result - 2024 (Overseas Division)</h2>
+        <div class="two-col">
+            <div>
+                <div class="name">KASIB RIZVI</div>
+                <div class="school">Indian School Al Wadi Al Kabir, Muscat, Oman</div>
+                <div class="percent">Percentile: XX.X</div>
+                <div class="admission">Admission: NIT Delhi (AI & Data Science)</div>
+            </div>
+            <div class="photo"><img src="kasib-rizvi.jpg" alt="Kasib Rizvi"></div>
+        </div>
+    </section>
+
+    <!-- CBSE Class 10 Results 2024 -->
+    <section class="section" id="cbse10-2024">
+        <h2 class="year-title">CBSE Class 10 Results - 2024</h2>
+        <div class="cards">
+            <div class="card"><div class="name">Insha Kamran</div><div class="school">Indian School Sur, Oman</div><div class="percent">97%</div></div>
+            <div class="card"><div class="name">Bushra Shaikh</div><div class="school">LPS Sharjah, UAE</div><div class="percent">96%</div></div>
+            <div class="card"><div class="name">Aariz Ahmad</div><div class="school">The Central School Dubai, UAE</div><div class="percent">95%</div></div>
+            <div class="card"><div class="name">Nabil Ahmad</div><div class="school">Indian School Seeb, Oman</div><div class="percent">95%</div></div>
+            <div class="card"><div class="name">Abdullah Minhaj</div><div class="school">Indian School Sohar, Oman</div><div class="percent">95%</div></div>
+            <div class="card"><div class="name">Syed Arsalan</div><div class="school">The Central School Dubai, UAE</div><div class="percent">93%</div></div>
+        </div>
+    </section>
+
+    <!-- CBSE Class 10 Results 2023 -->
+    <section class="section" id="cbse10-2023">
+        <h2 class="year-title">CBSE Class 10 Results - 2023 (Online Coaching)</h2>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-value">50%</div><div class="stat-label">Scored &gt; 90%</div></div>
+            <div class="stat-card"><div class="stat-value">30%</div><div class="stat-label">Scored &gt; 80%</div></div>
+            <div class="stat-card"><div class="stat-value">20%</div><div class="stat-label">Scored &lt; 80%</div></div>
+        </div>
+        <div class="cards">
+            <div class="card"><div class="name">Sana Parween</div><div class="school">Indian School Valerise, Muscat, Oman</div><div class="percent">95.8%</div></div>
+            <div class="card"><div class="name">Ayan Iqbal</div><div class="school">AK English School Muralesh, India</div><div class="percent">95%</div></div>
+            <div class="card"><div class="name">Athif Kalim</div><div class="school">Indian School Muscat, Oman</div><div class="percent">93.0%</div></div>
+            <div class="card"><div class="name">Shayista Fatima</div><div class="school">Indian School Valerise, Muscat, Oman</div><div class="percent">92%</div></div>
+            <div class="card"><div class="name">Zainab Hafeez</div><div class="school">Indian School Seeb, Oman</div><div class="percent">91.2%</div></div>
+            <div class="card"><div class="name">Sadiya Imran</div><div class="school">Indian School Al Wadi Al Kabir, Oman</div><div class="percent">91%</div></div>
+        </div>
+    </section>
+
+    <!-- CBSE Class 10 Results 2022 Highlight -->
+    <section class="section" id="highlight-2022">
+        <h2 class="year-title">Academic Year 2022 Highlight</h2>
+        <div class="card" style="max-width:400px;margin:0 auto;">
+            <div class="name">Ramisa Parween</div>
+            <div class="school">Indian School Al Maabela, Muscat</div>
+            <div class="percent">Overall: 94.2%</div>
+            <div class="percent">PCB: 96%</div>
+            <div class="school">Achievements: School Topper; Among top students in Indian schools in Muscat</div>
+        </div>
+    </section>
+
+    <!-- CTA at bottom -->
+    <section class="section" style="text-align:center;">
+        <button onclick="location.href='https://your-main-website.com/contact'" style="padding:15px 30px;border:none;border-radius:8px;background:var(--primary);color:var(--white);font-size:1rem;cursor:pointer;">See the Results Now! Contact Us</button>
+    </section>
+
+    <!-- Timed Popup -->
+    <div class="modal" id="promo-modal">
+        <div class="modal-content">
+            <h3>You've Seen the Results—Now Take Action!</h3>
+            <p>Ready to guide your child to the top? Get in touch with us today.</p>
+            <button onclick="location.href='https://your-main-website.com/contact'">Contact Us</button>
+        </div>
+    </div>
+
+    <script>
+        setTimeout(() => { document.getElementById('promo-modal').style.display = 'flex'; }, 20000);
+        document.getElementById('promo-modal').addEventListener('click', (e) => { if (e.target.id === 'promo-modal') e.target.style.display = 'none'; });
+    </script>
+</body>
+</html>
