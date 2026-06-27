@@ -229,11 +229,17 @@
             letter-spacing: -0.3px;
         }
         .nav-subtitle {
-            font-size: 0.58rem;
+            font-size: 0.56rem;
             font-weight: 500;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.6px;
+        }
+        @media (max-width: 380px) {
+            .nav-subtitle {
+                font-size: 0.5rem;
+                letter-spacing: 0.4px;
+            }
         }
         .nav-links {
             display: flex;
@@ -341,6 +347,9 @@
             width: 100%;
         }
 
+        .slider-container {
+            margin-bottom: 32px;
+        }
         .slider-wrapper {
             position: relative;
             width: 100%;
@@ -348,8 +357,16 @@
             overflow: hidden;
             box-shadow: var(--shadow-card);
             border: 1px solid var(--border);
-            margin-bottom: 32px;
             background: #fff;
+            padding-bottom: 0;
+        }
+        @media (max-width: 768px) {
+            .slider-wrapper {
+                padding-bottom: 30px;
+            }
+            .slider-arrows {
+                display: none;
+            }
         }
         .slider-track {
             display: flex;
@@ -456,7 +473,7 @@
             display: flex;
             gap: 10px;
             position: absolute;
-            bottom: 16px;
+            bottom: 12px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 5;
@@ -747,6 +764,30 @@
         }
         .about-snippet a:hover {
             text-decoration: underline;
+        }
+        .btn-about {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--green);
+            color: #fff;
+            padding: 12px 26px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .btn-about:hover {
+            background: var(--green-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(22, 163, 74, 0.3);
+        }
+        @media (max-width: 768px) {
+            .btn-about {
+                width: 100%;
+                justify-content: center;
+            }
         }
 
         .page-hero {
@@ -1273,6 +1314,23 @@
             background: rgba(255, 255, 255, 0.2);
             color: #fff;
         }
+        @media (max-width: 768px) {
+            .footer-inner {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 14px;
+            }
+            .footer-links {
+                justify-content: center;
+                gap: 14px;
+                flex-wrap: wrap;
+            }
+            .footer-links button,
+            .footer-links a {
+                font-size: 0.8rem;
+            }
+        }
 
         .fade-in {
             opacity: 0;
@@ -1515,10 +1573,6 @@
             .popup-card {
                 margin: 0 10px;
             }
-            .footer-inner {
-                flex-direction: column;
-                text-align: center;
-            }
             .steps {
                 flex-direction: column;
                 align-items: center;
@@ -1563,7 +1617,7 @@
     <nav class="navbar">
         <a href="#/home" class="nav-brand" id="navBrand">
             <span class="nav-logo">Symbiotic Learning</span>
-            <span class="nav-subtitle">Educational Resources</span>
+            <span class="nav-subtitle">Educational Resources Division</span>
         </a>
         <ul class="nav-links" id="navMenu">
             <li><a class="active" data-nav="home">Home</a></li>
@@ -1631,12 +1685,12 @@
     <script>
         (function() {
             // ═══════════════════════════════════════
-            // ARTICLES DATA
+            // ARTICLES DATA (with SEO-friendly slug)
             // ═══════════════════════════════════════
             const ARTICLES = [{
                 id: 'amu-courses-cuet-2026',
                 category: 'amu',
-                slug: 'courses-cuet',
+                slug: 'courses-in-amu-through-cuet-2026',
                 title: 'Courses in AMU Through CUET 2026 — Complete Guide',
                 excerpt: 'Full list of 15 UG programmes, required CUET subject combinations, step-by-step admission process, and frequently asked questions.',
                 date: 'Jun 25, 2026',
@@ -1687,7 +1741,7 @@
             let blogExpanded = false;
             let sliderAutoInterval = null;
             let sliderInitDone = false;
-            let homeHTML = ''; // saved static home HTML
+            let homeHTML = '';
 
             // ═══════════════════════════════════════
             // UTILITIES
@@ -1713,7 +1767,7 @@
                 if (hash === '#/jee-neet') return 'jee-neet';
                 if (hash === '#/cuet') return 'cuet';
                 if (hash === '#/contact') return 'contact';
-                // article routes: #/amu/slug or #/jamia/slug
+                // article routes: #/amu/[slug] etc.
                 const articleMatch = hash.match(/^#\/(amu|jamia|jee-neet|cuet)\/(.+)/);
                 if (articleMatch) return 'article-' + articleMatch[2];
                 return 'home';
@@ -1782,7 +1836,7 @@
             }
 
             // ═══════════════════════════════════════
-            // SLIDER
+            // SLIDER WITH TOUCH SWIPE (mobile)
             // ═══════════════════════════════════════
             function initSlider() {
                 const track = document.getElementById('sliderTrack');
@@ -1825,6 +1879,14 @@
                     resetAuto(); });
                 nextBtn.addEventListener('click', () => { next();
                     resetAuto(); });
+                // Touch swipe for mobile
+                let touchStartX = 0;
+                track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+                track.addEventListener('touchend', e => {
+                    const diff = touchStartX - e.changedTouches[0].clientX;
+                    if (Math.abs(diff) > 50) { diff > 0 ? next() : prev();
+                        resetAuto(); }
+                });
                 startAuto();
             }
 
@@ -1884,12 +1946,14 @@
                 `).join('') : '<p style="text-align:center;color:var(--text-muted);padding:20px;">More articles coming soon!</p>';
 
                 return `
-                    <div class="slider-wrapper" id="featuredSlider">
-                        <div class="slider-track" id="sliderTrack">${slidesHTML}</div>
-                        <div class="slider-dots" id="sliderDots"></div>
-                        <div class="slider-arrows">
-                            <button class="slider-arrow" id="prevSlide"><i class="fa-solid fa-chevron-left"></i></button>
-                            <button class="slider-arrow" id="nextSlide"><i class="fa-solid fa-chevron-right"></i></button>
+                    <div class="slider-container">
+                        <div class="slider-wrapper" id="featuredSlider">
+                            <div class="slider-track" id="sliderTrack">${slidesHTML}</div>
+                            <div class="slider-dots" id="sliderDots"></div>
+                            <div class="slider-arrows">
+                                <button class="slider-arrow" id="prevSlide"><i class="fa-solid fa-chevron-left"></i></button>
+                                <button class="slider-arrow" id="nextSlide"><i class="fa-solid fa-chevron-right"></i></button>
+                            </div>
                         </div>
                     </div>
 
@@ -1900,34 +1964,17 @@
                     <h2 class="section-title">📂 Browse by Category</h2>
                     <p class="section-subtitle">Find exam-specific information for your target institution</p>
                     <div class="category-tiles">
-                        <div class="cat-tile fade-in" data-route="amu">
-                            <div class="cat-icon">🏛️</div><h3>AMU</h3><p>Aligarh Muslim University</p>
-                        </div>
-                        <div class="cat-tile fade-in" data-route="jamia">
-                            <div class="cat-icon">🎓</div><h3>JAMIA</h3><p>Jamia Millia Islamia</p>
-                        </div>
-                        <div class="cat-tile fade-in" data-route="jee-neet">
-                            <div class="cat-icon">🔬</div><h3>JEE/NEET</h3><p>Engineering & Medical</p>
-                        </div>
-                        <div class="cat-tile fade-in" data-route="cuet">
-                            <div class="cat-icon">📝</div><h3>CUET</h3><p>Common University Entrance Test</p>
-                        </div>
+                        <div class="cat-tile fade-in" data-route="amu"><div class="cat-icon">🏛️</div><h3>AMU</h3><p>Aligarh Muslim University</p></div>
+                        <div class="cat-tile fade-in" data-route="jamia"><div class="cat-icon">🎓</div><h3>JAMIA</h3><p>Jamia Millia Islamia</p></div>
+                        <div class="cat-tile fade-in" data-route="jee-neet"><div class="cat-icon">🔬</div><h3>JEE/NEET</h3><p>Engineering & Medical</p></div>
+                        <div class="cat-tile fade-in" data-route="cuet"><div class="cat-icon">📝</div><h3>CUET</h3><p>Common University Entrance Test</p></div>
                     </div>
 
                     <h2 class="section-title">Why Symbiotic Learning?</h2>
                     <div class="trust-strip">
-                        <div class="trust-card fade-in">
-                            <div class="trust-icon"><i class="fa-solid fa-circle-check"></i></div>
-                            <h4>Verified Info</h4><p>All content reviewed by education experts</p>
-                        </div>
-                        <div class="trust-card fade-in">
-                            <div class="trust-icon"><i class="fa-solid fa-headset"></i></div>
-                            <h4>Expert Guidance</h4><p>Free counselling by phone or WhatsApp</p>
-                        </div>
-                        <div class="trust-card fade-in">
-                            <div class="trust-icon"><i class="fa-solid fa-arrows-rotate"></i></div>
-                            <h4>Regularly Updated</h4><p>Latest exam news as it happens</p>
-                        </div>
+                        <div class="trust-card fade-in"><div class="trust-icon"><i class="fa-solid fa-circle-check"></i></div><h4>Verified Info</h4><p>All content reviewed by education experts</p></div>
+                        <div class="trust-card fade-in"><div class="trust-icon"><i class="fa-solid fa-headset"></i></div><h4>Expert Guidance</h4><p>Free counselling by phone or WhatsApp</p></div>
+                        <div class="trust-card fade-in"><div class="trust-icon"><i class="fa-solid fa-arrows-rotate"></i></div><h4>Regularly Updated</h4><p>Latest exam news as it happens</p></div>
                     </div>
 
                     <div class="cta-banner fade-in">
@@ -1969,9 +2016,7 @@
                 const catArticles = ARTICLES.filter(a => a.category === category);
                 const articlesHTML = catArticles.length ? catArticles.map(a => `
                     <div class="article-card fade-in" data-route="article-${a.slug}">
-                        <div class="article-img" style="background-image:url('${a.image}');">
-                            <span class="article-tag">${a.category.toUpperCase()}</span>
-                        </div>
+                        <div class="article-img" style="background-image:url('${a.image}');"><span class="article-tag">${a.category.toUpperCase()}</span></div>
                         <div class="article-body">
                             <h2 class="article-title">${a.title}</h2>
                             <p class="article-excerpt">${a.excerpt}</p>
@@ -2125,7 +2170,6 @@
                 initFadeObserver(mainContent);
                 injectArticleStructuredData(article);
                 currentRoute = 'article-' + article.slug;
-                // scroll progress reset
                 if (readingProgress) readingProgress.style.width = '0%';
             }
 
@@ -2268,71 +2312,52 @@
             // ═══════════════════════════════════════
             function renderRoute(route) {
                 destroySlider();
-                if (route === 'home') {
-                    renderHomePage();
-                    return;
-                }
+                if (route === 'home') { renderHomePage(); return; }
                 if (route === 'amu') { renderAMUPage(); return; }
                 if (route === 'jamia') { renderJAMIAPage(); return; }
                 if (route === 'jee-neet') { renderJEENEETPage(); return; }
                 if (route === 'cuet') { renderCUETPage(); return; }
                 if (route === 'contact') { renderContactPage(); return; }
-                // article routes
                 if (route.startsWith('article-')) {
                     const slug = route.replace('article-', '');
                     const article = ARTICLES.find(a => a.slug === slug);
                     if (article) { renderBlogArticlePage(article); return; }
                 }
-                // fallback
                 renderHomePage();
             }
 
             // ═══════════════════════════════════════
             // EVENT LISTENERS
             // ═══════════════════════════════════════
-            // Scroll: reading progress
             window.addEventListener('scroll', () => {
                 if (readingProgress.classList.contains('hidden-progress')) return;
                 const winScroll = document.documentElement.scrollTop;
-                const height = document.documentElement.scrollHeight - document.documentElement
-                    .clientHeight;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
                 const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
                 readingProgress.style.width = scrolled + '%';
             });
 
-            // Nav links
             document.querySelectorAll('.nav-links a[data-nav]').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    navigateTo(this.dataset.nav);
-                });
+                link.addEventListener('click', function(e) { e.preventDefault();
+                    navigateTo(this.dataset.nav); });
             });
-            document.getElementById('navBrand').addEventListener('click', function(e) {
-                e.preventDefault();
-                navigateTo('home');
-            });
+            document.getElementById('navBrand').addEventListener('click', function(e) { e.preventDefault();
+                navigateTo('home'); });
 
-            // Mobile menu
             mobileMenu.querySelectorAll('a[data-nav]').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    navigateTo(this.dataset.nav);
-                });
+                link.addEventListener('click', function(e) { e.preventDefault();
+                    navigateTo(this.dataset.nav); });
             });
             hamburger.addEventListener('click', () => {
                 hamburger.classList.toggle('active');
                 mobileMenu.classList.toggle('open');
             });
 
-            // Footer links
             document.querySelectorAll('.footer-links a[data-nav]').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    navigateTo(this.dataset.nav);
-                });
+                link.addEventListener('click', function(e) { e.preventDefault();
+                    navigateTo(this.dataset.nav); });
             });
 
-            // Legal modals
             function showLegal(type) {
                 const data = {
                     privacy: { title: 'Privacy Policy',
@@ -2353,39 +2378,27 @@
             document.getElementById('btnTerms').addEventListener('click', () => showLegal('terms'));
             document.getElementById('legalModalClose').addEventListener('click', () => legalModal.classList.add(
                 'hidden'));
-            legalModal.addEventListener('click', function(e) {
-                if (e.target === legalModal) legalModal.classList.add('hidden');
-            });
+            legalModal.addEventListener('click', function(e) { if (e.target === legalModal) legalModal.classList.add(
+                    'hidden'); });
 
-            // Social icons
             ['socialFb', 'socialTw', 'socialIg'].forEach(id => {
                 document.getElementById(id).addEventListener('click', () => {
                     showToast('🔗 Social media links coming soon! We\'re updating our website.');
                 });
             });
 
-            // Welcome popup (8 seconds, localStorage)
             let popupShown = false;
             if (!localStorage.getItem('welcomePopupShown')) {
-                setTimeout(() => {
-                    if (!popupShown) {
-                        welcomePopup.classList.remove('hidden');
-                        popupShown = true;
-                    }
-                }, 8000);
+                setTimeout(() => { if (!popupShown) { welcomePopup.classList.remove('hidden');
+                        popupShown = true; } }, 8000);
             }
-            document.getElementById('closePopup').addEventListener('click', () => {
-                welcomePopup.classList.add('hidden');
-                localStorage.setItem('welcomePopupShown', '1');
-            });
-            welcomePopup.addEventListener('click', function(e) {
-                if (e.target === welcomePopup) {
-                    welcomePopup.classList.add('hidden');
-                    localStorage.setItem('welcomePopupShown', '1');
-                }
-            });
+            document.getElementById('closePopup').addEventListener('click', () => { welcomePopup.classList.add(
+                    'hidden');
+                localStorage.setItem('welcomePopupShown', '1'); });
+            welcomePopup.addEventListener('click', function(e) { if (e.target === welcomePopup) { welcomePopup
+                        .classList.add('hidden');
+                    localStorage.setItem('welcomePopupShown', '1'); } });
 
-            // Hash change
             window.addEventListener('hashchange', () => {
                 const route = getRouteFromHash();
                 if (route !== currentRoute) {
@@ -2405,7 +2418,7 @@
             updateActiveNav(initialRoute);
             updateDocumentTitle(initialRoute);
 
-            console.log('✅ Symbiotic Learning Resources v2.0 ready');
+            console.log('✅ Symbiotic Learning Resources v2.1 ready');
         })();
     </script>
 </body>
